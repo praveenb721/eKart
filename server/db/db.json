@@ -1,7 +1,11 @@
 {
   "userDetails": [
     {
-      "id": "ross12",
+      "userName": "Pravee",
+      "userMobileNumber": "3333333333",
+      "userPassword": "Inspire72#",
+      "userConfirmPassword": "Inspire72#",
+      "id": "praveenb721",
       "cards": [
         {
           "cardNumber": "1111111111",
@@ -16,31 +20,7 @@
           "expiryYear": "2024"
         }
       ]
-    },
-    {
-      "id": "chandler23",
-      "cards": []
-    },
-    {
-      "cards": [
-        {
-          "cardNumber": "1111111111",
-          "nameOnCard": "Ross",
-          "expiryMonth": "11",
-          "expiryYear": "2022"
-        },
-        {
-          "cardNumber": "2222222222",
-          "nameOnCard": "Ross",
-          "expiryMonth": "9",
-          "expiryYear": "2024"
-        }
-      ],
-      "userName": "Pravee",
-      "userMobileNumber": "3333333333",
-      "userPassword": "Inspire72#",
-      "userConfirmPassword": "Inspire72#",
-      "id": "praveenb721"
+      
     },
     {
       "userId": "praveenb722",
