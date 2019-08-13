@@ -47,7 +47,7 @@ validators.isAccountValid = function (data) {
     case "userPassword": {
         if( data.userPassword.length === 0 )
             validationResults["userPasswordError"] = "All fields are mandatory";
-        else if (! data.userPassword.match( /(())/ ) )
+        else if (! data.userPassword.match( /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*]))/ ) )
             validationResults["userPasswordError"] = "Password Should contain an uppercase, a lowercase, a special character and a number";
         else    
             validationResults["userPasswordError"] = "";
