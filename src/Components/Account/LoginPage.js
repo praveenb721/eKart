@@ -31,19 +31,6 @@ class LoginPage extends React.Component {
         else if (this.state.validationResults.isAuthenticated === "Invalid credentials...")
           this.props.history.push('/login');
       } );
-    /*this.setState ( {isAuthenticated:AccountStore.getValidationResults().isAuthenticated},
-      ()=>{
-      if(this.state.isAuthenticated === "valid"){
-          this.props.history.push('/home');
-      }
-          
-      else if(this.state.isAuthenticated === "Invalid credentials..."){
-          this.props.history.push('/login');
-        }
-      else
-            console.log("Some Error Occured");
-      }
-    );*/ 
     
   }
 
