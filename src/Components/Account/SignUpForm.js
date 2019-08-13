@@ -23,7 +23,7 @@ class SignUpForm extends React.Component {
   }
 
   changeEventHandler = () => {
-    this.setState ( AccountStore.getValidationResults(),
+    this.setState ( AccountStore.getAddAccountValidationResults(),
       ()=>{
         if(this.state.isAddedToServer === "Account Successfully Created")
           this.props.history.push('/signup');
@@ -49,11 +49,16 @@ class SignUpForm extends React.Component {
   } 
 
   render() {
+    var result ;
+    if(this.state.isAddedToServer === "Account Successfully Created" )
+      result = <h4 style={{paddingLeft:"15px",color:"green"}}>Account has been created successfully</h4> ;
+    if(this.state.isAddedToServer === "Server error occured" )
+      result = <h4 style={{paddingLeft:"15px",color:"red"}}>Server error occured. Please try after some time</h4>;
     return(
       <React.Fragment>
         <GuestPage></GuestPage>
-        <h3 style={{paddingLeft:"25px",color:"red"}}>{this.state.isAddedToServer}</h3>
-        <Form onSubmit={this.onSubmitHandler} style={{paddingLeft:"25px",paddingTop:"25px",width:'40%'}}>
+        {result}
+        <Form onSubmit={this.onSubmitHandler} style={{paddingLeft:"15px",paddingTop:"25px",width:'20%'}}>
 
           <Form.Group controlId="userId" >
             <Form.Label>UserID</Form.Label>

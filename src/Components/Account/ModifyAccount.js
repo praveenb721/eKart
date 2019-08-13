@@ -22,10 +22,12 @@ class ModifyAccount extends React.Component {
   }
 
   changeEventHandler = () => {
-    this.setState ( AccountStore.getValidationResults(),
+    this.setState ( AccountStore.getModifyAccountValidationResults(),
       ()=>{
-        if(this.state.isAddedToServer === "success")
+        if(this.state.isAddedToServer === "success"){
           this.props.history.push('/modifyAccount');
+        }
+          
         else if(this.state.isAddedToServer === "failure")
           this.props.history.push('/modifyAccount');
       }
@@ -46,10 +48,15 @@ class ModifyAccount extends React.Component {
   } 
 
   render() {
+    var result ;
+    if(this.state.isAddedToServer === "success" )
+      result = <h4 style={{paddingLeft:"15px",paddingTop:"15px",color:"green"}}>Account has been modified successfully</h4> ;
+    if(this.state.isAddedToServer === "Server error occured" )
+      result = <h4 style={{paddingLeft:"15px",paddingTop:"15px",color:"red"}}>Server error occured. Please try after some time</h4>;
     return(
       <React.Fragment>
         <HomePage></HomePage>
-        <h2 style = {{paddingLeft:"15px"}}>{this.state.isAddedToServer}</h2>
+        {result}
         <Form onSubmit={this.onSubmitHandler} style={{paddingLeft:"25px",paddingTop:"25px",width:'40%'}}>
 
           <Form.Group controlId="userName">

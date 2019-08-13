@@ -11,7 +11,7 @@ class LoginPage extends React.Component {
   constructor() {
     super();
     this.state = { 
-      isAuthenticated:''
+      validationResults:''
     };
   }
 
@@ -24,7 +24,14 @@ class LoginPage extends React.Component {
   }
 
   changeEventHandler = () => {
-    this.setState ( {isAuthenticated:AccountStore.getValidationResults().isAuthenticated},
+    this.setState ( {validationResults : AccountStore.getLoginAccountValidationResults()},
+      () => {
+        if(this.state.validationResults.isAuthenticated === "valid")
+          this.props.history.push('/home');
+        else if (this.state.validationResults.isAuthenticated === "Invalid credentials...")
+          this.props.history.push('/login');
+      } );
+    /*this.setState ( {isAuthenticated:AccountStore.getValidationResults().isAuthenticated},
       ()=>{
       if(this.state.isAuthenticated === "valid"){
           this.props.history.push('/home');
@@ -36,7 +43,7 @@ class LoginPage extends React.Component {
       else
             console.log("Some Error Occured");
       }
-    ); 
+    );*/ 
     
   }
 
@@ -55,20 +62,20 @@ class LoginPage extends React.Component {
       return(
       <React.Fragment>
         <GuestPage></GuestPage>
-        <Form onSubmit={this.onSubmitHandler} style={{paddingLeft:"25px",paddingTop:"25px",width:'40%'}}>
+        <Form onSubmit={this.onSubmitHandler} style={{paddingLeft:"15px",paddingTop:"25px",width:'20%'}}>
 
           <Form.Group controlId="userId" >
             <Form.Label>UserID</Form.Label>
             <Form.Control type="text" placeholder="Enter UserID"/>
           </Form.Group>
-          <p style={{color:"red"}}>{this.state.userIdError}</p>
+          <p style={{color:"red"}}>{this.state.validationResults.userIdError}</p>
 
 
           <Form.Group controlId="userPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control type="password" placeholder="Enter Password"/>
           </Form.Group>
-          <p style={{color:"red"}}>{this.state.userPasswordError}</p>
+          <p style={{color:"red"}}>{this.state.validationResults.userPasswordError}</p>
 
           <ButtonToolbar>
             <Button variant="primary" size="lg" type="submit">
@@ -77,12 +84,12 @@ class LoginPage extends React.Component {
           </ButtonToolbar> 
         </Form>
         <br></br>
-        <div style={{paddingLeft:"25px"}}>
+        <div style={{paddingLeft:"15px"}}>
           <Link to='/signup' >
             <h6> Click here to Signup </h6>
           </Link>
         </div>
-        <h3 style={{paddingLeft:"25px",color:"red"}}>{this.state.isAuthenticated}</h3>
+        <h3 style={{paddingLeft:"15px",color:"red"}}>{this.state.validationResults.isAuthenticated}</h3>
         
       </React.Fragment>
       

@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from "react-bootstrap/Button";
 import ButtonToolbar from "react-bootstrap/ButtonToolbar";
-import AccountStore from "../../Stores/AccountStore";
+import CardStore from "../../Stores/CardStore";
 import EKartActions from './../../Actions/EKartActions';
 import HomePage from '../HomePage';
 
@@ -15,15 +15,15 @@ class SignUpForm extends React.Component {
   }
 
   componentDidMount() {
-    AccountStore.addChangeListener(this.changeEventHandler);
+    CardStore.addChangeListener(this.changeEventHandler);
   }
 
   componentWillUnmount() {
-    AccountStore.removeChangeListener(this.changeEventHandler);
+    CardStore.removeChangeListener(this.changeEventHandler);
   }
 
   changeEventHandler = () => {
-    this.setState ( AccountStore.getValidationResults(),
+    this.setState ( CardStore.getValidationResults(),
       ()=>{
         if(this.state.isAddedToServer === "success")
           this.props.history.push('/addCard');
@@ -48,14 +48,21 @@ class SignUpForm extends React.Component {
   } 
 
   render() {
+    var result ;
+    if(this.state.isAddedToServer === "success" )
+      result = <h4 style={{paddingLeft:"15px",paddingTop:"15px",color:"green"}}>Card has been added successfully</h4> ;
+    if(this.state.isAddedToServer === "Server error occured" )
+      result = <h4 style={{paddingLeft:"15px",paddingTop:"15px",color:"red"}}>Server error occured. Please try after some time</h4>;
+    
     return(
       <React.Fragment>
         <HomePage></HomePage>
+        {result}
         <h3 style={{paddingLeft:"15px",color:"green"}}> {this.state.isAddedtoServer} </h3>
         <Form onSubmit={this.onSubmitHandler} style={{paddingLeft:"25px",paddingTop:"25px",width:'40%'}}>
 
           <Form.Group controlId="cardNumber" >
-            <Form.Label>CardN umber</Form.Label>
+            <Form.Label>Card Number</Form.Label>
             <Form.Control type="number" placeholder="Enter Card Number"/>
           </Form.Group>
           <p style={{color:"red"}}>{this.state.cardNumberError}</p>

@@ -5,10 +5,39 @@ var EventEmitter = require('events').EventEmitter;
 var EKartConstants = require('../Constants/EKartConstants');
 var CHANGE_EVENT = 'change';
 
-class AppStore extends EventEmitter {
+class AccountStore extends EventEmitter {
   constructor() {
-    super(); 
-    this.validationResults = {};     
+    super();   
+    this.addAccountValidationResults = {};
+    this.modifyAccountValidationResults = {};
+    this.loginAccountValidationResults = {};  
+  }
+
+  getAddAccountValidationResults(){
+    return this.addAccountValidationResults;
+  }
+
+  getModifyAccountValidationResults(){
+    return this.modifyAccountValidationResults;
+  }
+
+  getLoginAccountValidationResults(){
+    return this.loginAccountValidationResults;
+  }
+
+  setAddAccountValidationResults(results){
+    this.addAccountValidationResults = results;
+    this.emit(CHANGE_EVENT);
+  }
+
+  setModifyAccountValidationResults(results){
+    this.modifyAccountValidationResults = results;
+    this.emit(CHANGE_EVENT);
+  }
+
+  setLoginAccountValidationResults(results){
+    this.loginAccountValidationResults = results;
+    this.emit(CHANGE_EVENT);
   }
 
   setValidationResults (data) {
@@ -19,6 +48,8 @@ class AppStore extends EventEmitter {
   getValidationResults () {
       return this.validationResults;
   }
+  
+
   addChangeListener(callback) {
     this.on(CHANGE_EVENT, callback);
   }
@@ -33,89 +64,66 @@ class AppStore extends EventEmitter {
     let validationFeedback;
     switch (type) {
         case EKartConstants.ADD_ACCOUNT:
-          Validators.isAccountValid(data);
           validationFeedback = Validators.isAccountValid(data);  
           if(validationFeedback==='valid'){
             let serverFormatData = {...data,id:data.userId,cards:[]};
             axios.post("http://localhost:1010/userDetails",serverFormatData)
               .then (
-                result => this.setValidationResults({isAddedToServer : "Account Successfully Created"}),
-                error => this.setValidationResults({isAddedToServer : "Server error occured"})
+                result => this.setAddAccountValidationResults({isAddedToServer : "Account Successfully Created"}),
+                error => this.setAddAccountValidationResults({isAddedToServer : "Server error occured"})
               )
           }
           else
-              this.setValidationResults(validationFeedback); 
+              this.setAddAccountValidationResults(validationFeedback); 
           
         break;
 
         case EKartConstants.MODIFY_ACCOUNT:
-          Validators.isAccountValid(data);
           validationFeedback = Validators.isAccountValid(data);  
           if(validationFeedback==='valid'){
             let userId = sessionStorage.getItem("userId");
             axios.put("http://localhost:1010/userDetails/"+userId,data)
               .then (
-                result => this.setValidationResults({isAddedToServer : "success"}),
-                error => this.setValidationResults({isAddedToServer : "failure"})
+                result => this.setModifyAccountValidationResults({isAddedToServer : "success"}),
+                error => this.setModifyAccountValidationResults({isAddedToServer : "failure"})
               )
           }
           else
-              this.setValidationResults(validationFeedback); 
+              this.setModifyAccountValidationResults(validationFeedback); 
           
         break;
 
-        case EKartConstants.ADD_CARD:
-          validationFeedback = Validators.isCardValid(data);
-          if(validationFeedback==='valid'){
-            let userId = sessionStorage.getItem("userId");
-            let serverFormatData = { "cards": data};
-            axios.put("http://localhost:1010/userDetails/"+userId,serverFormatData)
-              .then (
-                result => this.setValidationResults({isAddedToServer : "success"}),
-                error => this.setValidationResults({isAddedToServer : "failure"})
-              )
-          }
-          
-          else
-            this.setValidationResults(validationFeedback);
-
-        break;
+        
 
         case EKartConstants.LOGIN:
-          Validators.isAccountValid(data);
-          validationFeedback = Validators.isAccountValid(data);  
+          validationFeedback = Validators.isLoginValid(data);  
+          console.log(validationFeedback);
           if(validationFeedback==='valid'){
             axios.post("http://localhost:1020/login",data)
             .then (
                 result =>{
                   sessionStorage.setItem("userId",data.userId);
-                  this.setValidationResults({isAuthenticated : result.data});
+                  this.setLoginAccountValidationResults({isAuthenticated : result.data});
                 },
-                error => this.setValidationResults({isAuthenticated : "failure"})
+                error => this.setAccountLoginValidationResults({isAuthenticated : "failure"})
               );                       
           }
           else
-              this.setValidationResults(validationFeedback);
+              this.setLoginAccountValidationResults(validationFeedback);
               
           
         break;
 
-        case "DELETE_CARD":
-          axios.delete("http://localhost:1010/userDetails/cards/"+data )
-            .then(
-              result => this.setValidationResults({isCardDeleted : "success"}),
-              error => this.setValidationResults({isCardDeleted : "failure"})
-            );
-          break;
-
         default:
-            //return true;
+          //
+
+        
     }
   }
   
 }
 
-var appStore = new AppStore();
-Dispatcher.register(appStore.handleActions.bind(appStore));
+var accountStore = new AccountStore();
+Dispatcher.register(accountStore.handleActions.bind(accountStore));
 
-export default appStore;
+export default accountStore;

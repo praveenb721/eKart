@@ -12,13 +12,13 @@ class GuestPage extends React.Component {
             <Nav className="mr-auto">
 
               <Nav >
-                <NavLink to='/login' activeStyle={{color:"green"}} style={{marginRight:"16px"}}>
+                <NavLink to='/login' activeStyle={{color:"green"}} style={{marginRight:"15px"}}>
                   <h4>Login </h4>
                 </NavLink>
               </Nav>
 
               <Nav >
-                <NavLink to='/signUp' activeStyle={{color:"green"}} style={{marginRight:"16px"}}>
+                <NavLink to='/signUp' activeStyle={{color:"green"}} style={{marginRight:"15px"}}>
                   <h4>Sign Up </h4>
                 </NavLink>
               </Nav>

@@ -47,7 +47,7 @@ validators.isAccountValid = function (data) {
     case "userPassword": {
         if( data.userPassword.length === 0 )
             validationResults["userPasswordError"] = "All fields are mandatory";
-        else if (! data.userPassword.match( /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%&*]))/ ) )
+        else if (! data.userPassword.match( /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/ ) )
             validationResults["userPasswordError"] = "Password Should contain an uppercase, a lowercase, a special character and a number";
         else    
             validationResults["userPasswordError"] = "";
@@ -139,6 +139,20 @@ validators.isCardValid = function (data){
         return "valid";
     else
         return validationResults;
+}
+
+validators.isLoginValid = function (data) {
+    let validationResults = {};
+    if(data.userId.length === 0)
+        validationResults["userIdError"] = "All fields are mandatory";
+    if(data.userPassword.length === 0)
+        validationResults["userPasswordError"] = "All fields are mandatory";
+    if(Object.keys(validationResults).length === 0)
+        return "valid";
+    else 
+        return validationResults;
+       
+    
 }
   
 

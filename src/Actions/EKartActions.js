@@ -3,26 +3,11 @@ var EKartConstants = require('../Constants/EKartConstants.js');
 
 
 let actions = {};
-
-actions.AddAccount = function ( data ) {
-  actions.sendToDispatcher ( data, EKartConstants.ADD_ACCOUNT)
-}
-
-actions.ModifyAccount = function ( data ) {
-  actions.sendToDispatcher ( data, EKartConstants.MODIFY_ACCOUNT)
-}
-
-actions.AddCard = function ( data ) {
-  actions.sendToDispatcher ( data, EKartConstants.ADD_CARD)
-}
-
-actions.Login = function ( data ) {
-  actions.sendToDispatcher ( data, EKartConstants.LOGIN)
-}
-
-actions.DeleteCard = function ( data ) {
-  actions.sendToDispatcher ( data, EKartConstants.DELETE_CARD)
-}
+actions.AddAccount = (data) => actions.sendToDispatcher (data, EKartConstants.ADD_ACCOUNT);
+actions.ModifyAccount = (data) => actions.sendToDispatcher (data, EKartConstants.MODIFY_ACCOUNT);
+actions.Login = (data) => actions.sendToDispatcher (data, EKartConstants.LOGIN);
+actions.AddCard = (data) => actions.sendToDispatcher (data, EKartConstants.ADD_CARD);
+actions.DeleteCard = (data) => actions.sendToDispatcher (data, EKartConstants.DELETE_CARD);
 
 
 actions.sendToDispatcher = ( data, type ) => {
